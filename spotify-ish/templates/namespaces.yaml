@@ -5,8 +5,8 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: Helm
   annotations:
-    meta.helm.sh/release-name: { { .Release.Name } }
-    meta.helm.sh/release-namespace: { { .Release.Namespace } }
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
 ---
 apiVersion: v1
 kind: Namespace
@@ -15,5 +15,5 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: Helm
   annotations:
-    meta.helm.sh/release-name: { { .Release.Name } }
-    meta.helm.sh/release-namespace: { { .Release.Namespace } }
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
