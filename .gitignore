@@ -2,6 +2,7 @@
 .env
 secret.yaml
 
+
 # Ignore mongodb PVC and other Kubernetes YAML files
 mongodb-data-persistentvolumeclaim.yaml
 mongo**
@@ -17,7 +18,7 @@ charts/
 /helm-release/
 
 # Ignore any other sensitive files (e.g., secrets, config files)
-secrets.yaml
+secrets-argo.yaml
 
 # Ignore infrastructure-related files that are environment-specific
 infrastructure/secrets/*

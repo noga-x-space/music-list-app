@@ -4,6 +4,7 @@ metadata:
   name: {{ .Release.Name }}-web
   labels:
     app: {{ .Release.Name }}-web
+  namespace: dev
 spec:
   replicas: {{ .Values.web.replicas }}
   selector:
@@ -22,16 +23,16 @@ spec:
               protocol: TCP
           env:
             - name: MONGO_HOST
-              value: {{ .Release.Name }}-db
+              value: {{ .Release.Name }}-db.mongo-db.svc.cluster.local
             - name: MONGO_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-mongo-credentials
-                  key: username
+                  name: mongo-credentials
+                  key: MONGO_INITDB_ROOT_USERNAME
             - name: MONGO_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-mongo-credentials
-                  key: password
+                  name: mongo-credentials
+                  key: MONGO_INITDB_ROOT_PASSWORD
             - name: MONGO_PORT
               value: "{{ .Values.mongodb.port }}"

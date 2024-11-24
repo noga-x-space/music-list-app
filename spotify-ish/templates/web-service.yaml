@@ -4,6 +4,7 @@ metadata:
   name: {{ .Release.Name }}-web
   labels:
     app: {{ .Release.Name }}-web
+  namespace: dev
 spec:
   type: {{ .Values.web.service.type }}
   ports:
