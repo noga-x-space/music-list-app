@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: music-list-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/noga-x-space/music-list-app
+    targetRevision: HEAD
+    path: ./spotify-ish
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dev
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
