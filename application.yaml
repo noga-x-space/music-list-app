@@ -11,7 +11,7 @@ spec:
     path: ./spotify-ish
   destination:
     server: https://kubernetes.default.svc
-    namespace: dev
+    # namespace: dev
   syncPolicy:
     automated:
       selfHeal: true
