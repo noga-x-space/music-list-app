@@ -41,11 +41,15 @@ securityContext:
   # runAsNonRoot: true
   # runAsUser: 1000
 
+# service:
+#   type: NodePort
+#   port: 5000 # Port clients inside the cluster will use
+#   targetPort: 5000 # Port your Flask app is listening on inside the container
+#   nodePort: 32423 # External port exposed on each node for access (optional, Kubernetes can auto-assign it)
 service:
-  type: NodePort
-  port: 5000        # Port clients inside the cluster will use
-  targetPort: 5000  # Port your Flask app is listening on inside the container
-  nodePort: 32423   # External port exposed on each node for access (optional, Kubernetes can auto-assign it)
+  type: ClusterIP # שינוי מ-NodePort ל-ClusterIP
+  port: 5000
+  targetPort: 5000
 
 ingress:
   enabled: false
@@ -119,3 +123,19 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+env:
+  - name: MONGO_HOST
+    value: "db" # שם ה-service של ה-MongoDB בתוך הקלאסטר
+  - name: MONGO_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: mongo-credentials
+        key: MONGO_INITDB_ROOT_USERNAME
+  - name: MONGO_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: mongo-credentials
+        key: MONGO_INITDB_ROOT_PASSWORD
+  - name: MONGO_PORT
+    value: "27017"
