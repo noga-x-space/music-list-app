@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music Manager</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --spotify-black: #191414;
+            --spotify-green: #1DB954;
+            --spotify-dark-gray: #282828;
+            --spotify-light-gray: #B3B3B3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--spotify-black);
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: var(--spotify-green);
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h2 {
+            color: white;
+            margin: 20px 0;
+            font-size: 1.8em;
+        }
+
+        .section {
+            background: var(--spotify-dark-gray);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            background: #404040;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"]:focus {
+            outline: 2px solid var(--spotify-green);
+        }
+
+        button {
+            background: var(--spotify-green);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background: #1ed760;
+        }
+
+        .list-group {
+            display: grid;
+            gap: 15px;
+        }
+
+        .list-item {
+            background: #404040;
+            padding: 15px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .list-item:hover {
+            background: #505050;
+        }
+
+        .item-info {
+            flex-grow: 1;
+        }
+
+        .remove-btn {
+            background: transparent;
+            color: var(--spotify-light-gray);
+            padding: 8px;
+            border-radius: 50%;
+            text-decoration: none;
+        }
+
+        .remove-btn:hover {
+            color: #ff4646;
+            background: rgba(255, 70, 70, 0.1);
+        }
+
+        .singer-select {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            background: #404040;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 10px;
+            accent-color: var(--spotify-green);
+            width: 16px;
+            height: 16px;
+        }
+
+        .song-singers {
+            color: var(--spotify-light-gray);
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-music"></i> Music Manager</h1>
+        
+        <div class="section">
+            <h2>Add Singer</h2>
+            <form action="{{ url_for('add_singer') }}" method="post">
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Enter singer name..." required>
+                    <button type="submit"><i class="fas fa-plus"></i> Add Singer</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2>Singers</h2>
+            <div class="list-group">
+                {% for singer in singers %}
+                <div class="list-item">
+                    <div class="item-info">
+                        <i class="fas fa-user"></i> {{ singer.name }}
+                    </div>
+                    <a href="{{ url_for('remove_singer', singer_id=singer._id|string) }}" class="remove-btn">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Add Song</h2>
+            <form action="{{ url_for('add_song') }}" method="post">
+                <div class="form-group">
+                    <input type="text" name="title" placeholder="Enter song title..." required>
+                    <h3>Select Singers:</h3>
+                    <div class="singer-select">
+                        {% for singer in singers %}
+                        <div class="checkbox-container">
+                            <input type="checkbox" name="singers" value="{{ singer._id|string }}" id="singer{{ loop.index }}">
+                            <label for="singer{{ loop.index }}">{{ singer.name }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button type="submit"><i class="fas fa-plus"></i> Add Song</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2>Songs</h2>
+            <div class="list-group">
+                {% for song in songs %}
+                <div class="list-item">
+                    <div class="item-info">
+                        <div><i class="fas fa-music"></i> {{ song.title }}</div>
+                        <div class="song-singers">
+                            <i class="fas fa-users"></i>
+                            {% for singer_id in song.singer_ids %}
+                                {% for singer in singers if singer._id|string == singer_id %}
+                                    {{ singer.name }}{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <a href="{{ url_for('remove_song', song_id=song._id|string) }}" class="remove-btn">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

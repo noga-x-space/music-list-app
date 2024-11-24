@@ -1,0 +1,8 @@
+# Ignore sensitive files
+.env
+secret.yaml
+
+# Ignore mongodb PVC and other Kubernetes YAML files
+mongodb-data-persistentvolumeclaim.yaml
+mongo**
+
