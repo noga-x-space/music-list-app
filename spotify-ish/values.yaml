@@ -126,7 +126,7 @@ affinity: {}
 
 env:
   - name: MONGO_HOST
-    value: "db" # שם ה-service של ה-MongoDB בתוך הקלאסטר
+    value: "mongo-db-mongodb.mongodb-ns.svc.cluster.local"
   - name: MONGO_USERNAME
     valueFrom:
       secretKeyRef:
