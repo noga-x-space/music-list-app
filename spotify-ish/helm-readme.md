@@ -1,3 +1,11 @@
+1. apply secrets:
+```powershell
+kubectl apply -f secret.yaml
+```
+this makes sure there's the mongo-credential secret
+
+
+
 to install the helm package-
 
 ```powershell
