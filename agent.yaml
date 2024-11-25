@@ -2,49 +2,13 @@ apiVersion: v1
 kind: Pod
 spec:
   containers:
-  - name: dind
-    image: docker/compose:1.29.2 # Includes both docker and docker-compose
-    securityContext:
-      privileged: true
-    volumeMounts:
-    - mountPath: /var/run
-      name: docker-sock
-  volumes:
-  - name: docker-sock
-    emptyDir: {}
-
-
-# apiVersion: v1
-# kind: Pod
-# spec:
-#   containers:
-#   - name: dind
-#     image: drpsychick/dind-buildx-helm
-#     alwaysPull: true
-#     securityContext:
-#       privileged: true
-#     volumeMounts:
-#     - mountPath: /var/run
-#       name: docker-sock
-#   volumes:
-#   - name: docker-sock
-#   emptyDir: {}
-
-# apiVersion: v1
-# kind: Pod
-# spec:
-#   containers:
-#     - name: dind
-#       image: docker:24.0.5-dind # Docker image with docker-compose
-#       securityContext:
-#         privileged: true
-#       volumeMounts:
-#         - mountPath: /var/run
-#           name: docker-sock
-#     - name: helper
-#       image: docker/compose:1.29.2 # Standalone docker-compose
-#       command:
-#         - cat
-#   volumes:
-#     - name: docker-sock
-#       emptyDir: {}
+    - name: docker
+      image: idoshoshani123/docker-dnd-aks:latest
+      imagePullPolicy: Always
+      securityContext:
+        privileged: true
+    - name: python
+      image: python:3.9-slim
+      command:
+        - sleep
+        - infinity
