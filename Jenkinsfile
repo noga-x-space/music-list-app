@@ -15,7 +15,6 @@ pipeline {
     }
 
     stages {
-        // for test stage run python -m pytest app/test_app.py -v
         stage('Checkout Code') {
             steps {
                 checkout scm
@@ -23,20 +22,16 @@ pipeline {
         }
         stage('Hello World') {
             steps {
-                script {
-                    echo 'Hello, World!'
-                }
+                echo 'Hello, World!'
             }
         }
 
-        stage('Add Docker-compose'){
-            steps{
-                script{
-                    sh '''
-                        apk add --no-cache docker-compose
-                        docker-compose build
-                    '''
-                }
+        stage('Add Docker-compose') {
+            steps {
+                sh '''
+                    apk add --no-cache docker-compose
+                    docker-compose build
+                '''
             }
         }
         stage('Build and Test') {
@@ -57,15 +52,6 @@ pipeline {
             }
         }
 
-        // stage('Push Docker Image') {
-        //     steps {
-        //         sh '''
-        //             echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin
-        //             docker push ${DOCKER_IMAGE}
-        //             docker logout
-        //         '''
-        //     }
-        // }
         stage('Push Docker Image') {
             steps {
                 withDockerRegistry(credentialsId: 'dockerhub-credentials') {
@@ -75,17 +61,14 @@ pipeline {
                 }
             }
         }
-
     }
     
     post {
         always {
-            node {
-                sh '''
-                    docker-compose down -v || true
-                    docker logout || true
-                '''
-            }
+            sh '''
+                docker-compose down -v || true
+                docker logout || true
+            '''
         }
         success {
             echo 'Pipeline completed successfully!'
