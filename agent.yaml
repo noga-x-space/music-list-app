@@ -2,13 +2,22 @@ apiVersion: v1
 kind: Pod
 spec:
   containers:
-    - name: docker
-      image: nogadocker/dind-agent
-      imagePullPolicy: Always
+    - name: jnlp
+      image: nogadocker/dind-agent:latest
+      resources:
+        requests:
+          cpu: 500m
+          memory: 512Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
       securityContext:
         privileged: true
-    - name: python
-      image: python:3.9-slim
-      command:
-        - sleep
-        - infinity
+        runAsUser: 0
+      volumeMounts:
+        - name: docker-sock
+          mountPath: /var/run/docker.sock
+  volumes:
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
