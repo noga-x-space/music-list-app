@@ -1,3 +1,4 @@
+# spotify-ish/templates/web-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -23,7 +24,7 @@ spec:
               protocol: TCP
           env:
             - name: MONGO_HOST
-              value: {{ .Release.Name }}-db.mongo-db.svc.cluster.local
+              value: {{ .Values.web.mongodb.host }}  # Make sure this line exactly matches
             - name: MONGO_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -35,4 +36,4 @@ spec:
                   name: mongo-credentials
                   key: MONGO_INITDB_ROOT_PASSWORD
             - name: MONGO_PORT
-              value: "{{ .Values.mongodb.port }}"
+              value: "{{ .Values.web.mongodb.port }}"

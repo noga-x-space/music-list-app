@@ -1,5 +1,5 @@
 apiVersion: v2
-name: spotify-app
-description: A Helm chart for Spotify Application with MongoDB
+name: spotify-ish
+description: Web application for Spotify-ish
 version: 0.1.0
-appVersion: "1.0.0"
+type: application
