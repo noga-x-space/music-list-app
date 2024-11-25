@@ -40,8 +40,9 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                withDockerRegistry(credentialsId: 'dockerhub-credentials') {
+                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh '''
+                        docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
                         docker push ${DOCKER_IMAGE}
                     '''
                 }
