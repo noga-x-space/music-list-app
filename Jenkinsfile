@@ -32,7 +32,7 @@ pipeline {
         stage('Build Production Image') {
             steps {
                 sh '''
-                    docker build -t ${DOCKER_IMAGE} .
+                    docker build -t nogadocker/spotify:${BUILD_NUMBER} .
                     echo "Production Docker image built successfully"
                 '''
             }
