@@ -7,7 +7,7 @@ pipeline {
     }
     environment {
         GITHUB_TOKEN = credentials('GITHUB_TOKEN')
-        DOCKER_IMAGE = 'nogadocker/spotify:${BUILD_NUMBER}'
+        DOCKER_IMAGE = 'nogadocker/spotify:latest'
         DOCKER_CREDENTIALS_ID = credentials('dockerhub-credentials')
         // for when i use testing:
         // MONGO_USERNAME = credentials('mongo-username')
@@ -32,7 +32,7 @@ pipeline {
         stage('Build Production Image') {
             steps {
                 sh '''
-                    docker build -t nogadocker/spotify:${BUILD_NUMBER} .
+                    docker build -t ${DOCKER_IMAGE} .
                     echo "Production Docker image built successfully"
                 '''
             }
