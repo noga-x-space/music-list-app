@@ -6,20 +6,29 @@ pipeline {
         }
     }
     environment {
+        GITHUB_TOKEN = credentials('GITHUB_TOKEN')
         DOCKER_IMAGE = 'nogadocker/spotify:${BUILD_NUMBER}'
         DOCKER_CREDENTIALS_ID = credentials('dockerhub-credentials')
-        MONGO_USERNAME = credentials('mongo-username')
-        MONGO_PASSWORD = credentials('mongo-password')
-        MONGO_HOST = 'db'
-        MONGO_PORT = '27017'
+        // for when i use testing:
+
+        // MONGO_USERNAME = credentials('mongo-username')
+        // MONGO_PASSWORD = credentials('mongo-password')
+        // MONGO_HOST = 'db'
+        // MONGO_PORT = '27017'
     }
 
     stages {
-        stage('Checkout Code') {
+         stage('Checkout') {
             steps {
-                checkout scm
-            }
+                deleteDir()
+                withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN')]) {
+                    git(
+                        url: "https://oauth2:${GITHUB_TOKEN}@github.com/noga-x-space/music-list-app.git"
+                        branch: 'feature'
+                    )
+                }
         }
+
 
         stage('Hello World') {
             steps {
