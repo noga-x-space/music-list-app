@@ -6,7 +6,7 @@ pipeline {
         }
     }
     environment {
-        DOCKER_IMAGE = 'nogadocker/spotify:latest'
+        DOCKER_IMAGE = 'nogadocker/spotify:${BUILD_NUMBER}'
         DOCKER_CREDENTIALS_ID = credentials('dockerhub-credentials')
         MONGO_USERNAME = credentials('mongo-username')
         MONGO_PASSWORD = credentials('mongo-password')
@@ -29,6 +29,16 @@ pipeline {
             }
         }
 
+        stage('Add Docker-compose'){
+            steps{
+                script{
+                    sh '''
+                        apk add --no-cache docker-compose
+                        docker-compose build
+                    '''
+                }
+            }
+        }
         stage('Build and Test') {
             steps {
                 sh '''
@@ -47,15 +57,25 @@ pipeline {
             }
         }
 
+        // stage('Push Docker Image') {
+        //     steps {
+        //         sh '''
+        //             echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin
+        //             docker push ${DOCKER_IMAGE}
+        //             docker logout
+        //         '''
+        //     }
+        // }
         stage('Push Docker Image') {
             steps {
-                sh '''
-                    echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin
-                    docker push ${DOCKER_IMAGE}
-                    docker logout
-                '''
+                withDockerRegistry(credentialsId: 'dockerhub-credentials') {
+                    sh '''
+                        docker push ${DOCKER_IMAGE}
+                    '''
+                }
             }
         }
+
     }
     
     post {
