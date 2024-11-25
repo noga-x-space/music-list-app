@@ -10,7 +10,6 @@ pipeline {
         DOCKER_IMAGE = 'nogadocker/spotify:${BUILD_NUMBER}'
         DOCKER_CREDENTIALS_ID = credentials('dockerhub-credentials')
         // for when i use testing:
-
         // MONGO_USERNAME = credentials('mongo-username')
         // MONGO_PASSWORD = credentials('mongo-password')
         // MONGO_HOST = 'db'
@@ -18,7 +17,7 @@ pipeline {
     }
 
     stages {
-         stage('Checkout') {
+        stage('Checkout') {
             steps {
                 deleteDir()
                 withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN')]) {
@@ -27,8 +26,8 @@ pipeline {
                         branch: 'app'
                     )
                 }
-        }
-
+            }
+        }  // <-- Close the Checkout stage here
 
         stage('Hello World') {
             steps {
