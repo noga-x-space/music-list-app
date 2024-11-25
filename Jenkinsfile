@@ -29,10 +29,12 @@ pipeline {
 
         stage('Add Docker-compose') {
             steps {
-                sh '''
-                    apk add --no-cache docker-compose
-                    docker-compose build
-                '''
+                container('docker') {
+                    sh '''
+                        apt-get update && apt-get install -y docker-compose
+                        docker-compose build
+                    '''
+                }
             }
         }
 
