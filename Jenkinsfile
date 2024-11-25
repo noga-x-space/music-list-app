@@ -27,13 +27,7 @@ pipeline {
                     )
                 }
             }
-        }  // <-- Close the Checkout stage here
-
-        stage('Hello World') {
-            steps {
-                echo 'Hello, World!'
-            }
-        }
+        }  
 
         stage('Build Production Image') {
             steps {
