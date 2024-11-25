@@ -27,26 +27,6 @@ pipeline {
             }
         }
 
-        stage('Add Docker-compose') {
-            steps {
-                container('docker') {
-                    sh '''
-                        apt-get update && apt-get install -y docker-compose
-                        docker-compose build
-                    '''
-                }
-            }
-        }
-
-        stage('Build and Test') {
-            steps {
-                sh '''
-                    docker-compose build
-                    echo "Docker Compose build completed successfully"
-                '''
-            }
-        }
-
         stage('Build Production Image') {
             steps {
                 sh '''
@@ -68,14 +48,6 @@ pipeline {
     }
 
     post {
-        always {
-            container('dind') {
-                sh '''
-                    docker-compose down -v || true
-                    docker logout || true
-                '''
-            }
-        }
         success {
             echo 'Pipeline completed successfully!'
         }

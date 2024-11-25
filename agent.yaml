@@ -3,7 +3,7 @@ kind: Pod
 spec:
   containers:
     - name: docker
-      image: idoshoshani123/docker-dnd-aks:latest
+      image: nogadocker/dind-agent
       imagePullPolicy: Always
       securityContext:
         privileged: true
