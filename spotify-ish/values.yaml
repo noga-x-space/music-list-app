@@ -1,35 +1,14 @@
-mongodb:
-  image: mongo:latest
-  port: 27017
-  persistence:
-    enabled: true
-    storageClass: ""
-    size: 1Gi
-
+# spotify-ish/values.yaml
 web:
   image: nogadocker/spotify
   tag: latest
   port: 5000
   replicas: 1
+  namespace: dev
   service:
     type: NodePort
     port: 5000
     targetPort: 5000
-
-secrets:
-  mongoCredentials:
-    username: "" # Set your MongoDB username
-    password: "" # Set your MongoDB password
-
-# secrets:
-#   mongoCredentials:
-#     username:
-#       valueFrom:
-#         secretKeyRef:
-#           name: mongo-credentials
-#           key: MONGO_INITDB_ROOT_USERNAME
-#     password:
-#       valueFrom:
-#         secretKeyRef:
-#           name: mongo-credentials
-#           key: MONGO_INITDB_ROOT_PASSWORD
+  mongodb:
+    host: spotify-db-mongodb.mongo-db.svc.cluster.local
+    port: 27017

@@ -1,10 +1,10 @@
-Thank you for installing {{ .Chart.Name }}.
+Web application has been deployed to {{ .Release.Namespace }} namespace.
 
-Your release is named {{ .Release.Name }}.
-
-To get the application URL, run:
+1. Get the application URL by running these commands:
 {{- if eq .Values.web.service.type "NodePort" }}
-  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ .Release.Name }}-web)
-  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
-  echo http://$NODE_IP:$NODE_PORT
+   export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ .Release.Name }}-web)
+   export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+   echo http://$NODE_IP:$NODE_PORT
+{{- else if eq .Values.web.service.type "ClusterIP" }}
+   kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ .Release.Name }}-web {{ .Values.web.service.port }}:{{ .Values.web.service.port }}
 {{- end }}

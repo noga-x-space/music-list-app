@@ -1,0 +1,8 @@
+MongoDB has been deployed to {{ .Release.Namespace }} namespace.
+
+1. Get the MongoDB service endpoint:
+   export MONGODB_HOST={{ .Release.Name }}-mongodb.{{ .Release.Namespace }}.svc.cluster.local
+   export MONGODB_PORT={{ .Values.mongodb.service.port }}
+
+2. The MongoDB service is accessible within the cluster at:
+   {{ .Release.Name }}-mongodb.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.mongodb.service.port }}
