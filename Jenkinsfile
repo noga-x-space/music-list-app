@@ -20,6 +20,7 @@ pipeline {
                 checkout scm
             }
         }
+
         stage('Hello World') {
             steps {
                 echo 'Hello, World!'
@@ -34,6 +35,7 @@ pipeline {
                 '''
             }
         }
+
         stage('Build and Test') {
             steps {
                 sh '''
@@ -62,13 +64,15 @@ pipeline {
             }
         }
     }
-    
+
     post {
         always {
-            sh '''
-                docker-compose down -v || true
-                docker logout || true
-            '''
+            container('dind') {
+                sh '''
+                    docker-compose down -v || true
+                    docker logout || true
+                '''
+            }
         }
         success {
             echo 'Pipeline completed successfully!'
