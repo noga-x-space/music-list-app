@@ -79,17 +79,19 @@ pipeline {
     }
     
     post {
+        always {
+            node {
+                sh '''
+                    docker-compose down -v || true
+                    docker logout || true
+                '''
+            }
+        }
         success {
             echo 'Pipeline completed successfully!'
         }
         failure {
             echo 'Pipeline failed!'
-        }
-        always {
-            sh '''
-                docker-compose down -v
-                docker logout
-            '''
         }
     }
 }
