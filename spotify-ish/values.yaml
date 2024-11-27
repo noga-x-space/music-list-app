@@ -121,9 +121,17 @@ tolerations: []
 affinity: {}
 
 mongodb:
+  enabled: true 
+  replicaCount: 1 
+  image: 
+      repository: bitnami/mongodb 
+      tag: 6.0.4
   username: "root"
   host: "mongodb"
   secretName: "mongodb"
   secretKeys:
     rootPassword: "mongodb-root-password"
     password: "mongodb-passwords"
+  service: 
+   type: ClusterIP 
+   port: 27017
