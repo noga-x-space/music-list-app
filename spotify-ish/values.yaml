@@ -15,12 +15,10 @@ mongodb:
 # Web application configurations
 web:
   image: nogadocker/spotify
-  tag: "44"
+  tag: "45"
   port: 5000
   replicas: 1
   service:
     type: NodePort
     port: 5000
     targetPort: 5000
-
-    
