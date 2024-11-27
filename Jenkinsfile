@@ -9,6 +9,7 @@ pipeline {
         GITHUB_TOKEN = credentials('GITHUB_TOKEN')
         DOCKER_IMAGE = "nogadocker/spotify:${BUILD_NUMBER}"
         DOCKER_CREDENTIALS_ID = credentials('dockerhub-credentials')
+        GITHUB_REPO = 'noga-x-space/music-list-app'
         // for when i use testing:
         // MONGO_USERNAME = credentials('mongo-username')
         // MONGO_PASSWORD = credentials('mongo-password')
@@ -50,11 +51,11 @@ pipeline {
         }
 
         stage('Update Helm values.yaml') {
-            steps {
+            steps { 
                 script {
                     // Use sed to replace the tag value in the values.yaml file
                     sh """
-                        yq eval '.web.tag = \"${BUILD_NUMBER}\"' -i values.yaml
+                        yq eval '.web.tag = \"${BUILD_NUMBER}\"' -i ./spotify-ish/values.yaml
                     """
                 }
             }
@@ -66,12 +67,17 @@ pipeline {
                         sh """
                             git config --global user.email "jenkins@update.com"
                             git config --global user.name "jenkins"
+
+                            
+                            git branch
                         """
 
                         // Add and commit changes to values.yaml
                         sh """
-                            git add values.yaml
+                            git add ./spotify-ish/values.yaml
+                            git status
                             git commit -m "Update web tag to ${BUILD_NUMBER}"
+                            git remote -v
                             git push https://oauth2:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git main
                         """
                     }
