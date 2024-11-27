@@ -95,6 +95,8 @@ kubectl create secret generic mongo-credentials \
 --from-literal=MONGO_PASSWORD=[desired password]
 ```
 
+- Then apply it in the right namespace!
+
 ### Deploy MongoDB and the Web Application:
 
 Deploy MongoDB using the provided db-deployment.yaml and db-service.yaml. This will create a MongoDB pod and service within your Kubernetes cluster.
