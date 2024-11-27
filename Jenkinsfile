@@ -24,7 +24,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN')]) {
                     git(
                         url: "https://oauth2:${GITHUB_TOKEN}@github.com/noga-x-space/music-list-app.git",
-                        branch: 'app'
+                        branch: 'main'
                     )
                 }
             }
