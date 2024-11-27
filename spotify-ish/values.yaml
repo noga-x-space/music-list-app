@@ -127,6 +127,7 @@ mongodb:
       repository: bitnami/mongodb 
       tag: 6.0.4
   username: "root"
+  database: "singers_db"
   host: "mongodb"
   secretName: "mongodb"
   secretKeys:
