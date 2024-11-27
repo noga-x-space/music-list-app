@@ -8,7 +8,11 @@ mongodb-data-persistentvolumeclaim.yaml
 
 
 mongo.yaml
+spotify-ish-dari*
+readme2.md
+secret*
 secret.yaml
+secrets.yaml
 # Ignore Helm-specific directories
 .helm/
 # Ignore generated files from Helm package and deploy commands
