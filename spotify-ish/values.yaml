@@ -1,6 +1,5 @@
 # Main namespace for all components
 namespace: spotify-app
-
 # MongoDB configurations
 mongodb:
   image: mongo
@@ -13,11 +12,10 @@ mongodb:
   service:
     type: ClusterIP
     port: 27017
-
 # Web application configurations
 web:
   image: nogadocker/spotify
-  tag: latest
+  tag: "44"
   port: 5000
   replicas: 1
   service:
