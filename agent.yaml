@@ -2,49 +2,22 @@ apiVersion: v1
 kind: Pod
 spec:
   containers:
-  - name: dind
-    image: docker/compose:1.29.2 # Includes both docker and docker-compose
-    securityContext:
-      privileged: true
-    volumeMounts:
-    - mountPath: /var/run
-      name: docker-sock
+    - name: jnlp
+      image: nogadocker/dind-agent:latest
+      resources:
+        requests:
+          cpu: 500m
+          memory: 512Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+      securityContext:
+        privileged: true
+        runAsUser: 0
+      volumeMounts:
+        - name: docker-sock
+          mountPath: /var/run/docker.sock
   volumes:
-  - name: docker-sock
-    emptyDir: {}
-
-
-# apiVersion: v1
-# kind: Pod
-# spec:
-#   containers:
-#   - name: dind
-#     image: drpsychick/dind-buildx-helm
-#     alwaysPull: true
-#     securityContext:
-#       privileged: true
-#     volumeMounts:
-#     - mountPath: /var/run
-#       name: docker-sock
-#   volumes:
-#   - name: docker-sock
-#   emptyDir: {}
-
-# apiVersion: v1
-# kind: Pod
-# spec:
-#   containers:
-#     - name: dind
-#       image: docker:24.0.5-dind # Docker image with docker-compose
-#       securityContext:
-#         privileged: true
-#       volumeMounts:
-#         - mountPath: /var/run
-#           name: docker-sock
-#     - name: helper
-#       image: docker/compose:1.29.2 # Standalone docker-compose
-#       command:
-#         - cat
-#   volumes:
-#     - name: docker-sock
-#       emptyDir: {}
+    - name: docker-sock
+      hostPath:
+        path: /var/run/docker.sock
