@@ -13,9 +13,6 @@ mongodb:
   service:
     type: ClusterIP
     port: 27017
-  # credentials are base64 encoded
-  # username: YWRtaW4=          # admin
-  # password: cGFzc3dvcmQxMjM=  # password123
 
 # Web application configurations
 web:
