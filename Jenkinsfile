@@ -20,15 +20,11 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                deleteDir()
-                withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN')]) {
-                    git(
-                        url: "https://oauth2:${GITHUB_TOKEN}@github.com/noga-x-space/music-list-app.git",
-                        branch: 'main'
-                    )
-                }
+                // Checkout the code from the repository
+                checkout scm
             }
-        }  
+        }
+        
 
         stage('Build Production Image') {
             steps {
@@ -40,6 +36,9 @@ pipeline {
         }
 
         stage('Push Docker Image') {
+            when {
+                    branch 'main'
+                 }
             steps {
                  withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh '''
@@ -61,6 +60,9 @@ pipeline {
             }
         }
         stage('Commit and Push Changes to GitHub') {
+            when {
+                    branch 'main'
+                 }
             steps {
                 withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN')]) {
                     script {
