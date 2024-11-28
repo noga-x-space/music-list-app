@@ -80,7 +80,7 @@ pipeline {
                             git status
                             git commit -m "Update web tag to ${BUILD_NUMBER}"
                             git remote -v
-                            git push https://oauth2:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git main
+                            git push https://oauth2:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git origin main
                         """
                     }
                 }
